@@ -15,15 +15,24 @@ p.setup(time_step)
 #sim.set_numbre_of_neurons_per_core(sim.MeanfieldBase, 1)
 
 pop = p.Population(1, p.extra_models.Meanfield())
-pop.record('Ve')
-#pop.record('err_func')
+
+#pop.record('Ve')
+pop.record('err_func')
+#pop.record('sV')
 
 p.run(runtime)
 
 #A_pop = pop.get_data('a')
-Ve_pop = pop.get_data('Ve')
-#err_pop = pop.get_data('err_func')
+#Ve_pop = pop.get_data('Ve')
+err_pop = pop.get_data('err_func')
+#sV_pop = pop.get_data('sV')
 
+
+#print(Ve.segments[0].filter(name='Ve')[0])
+#print(sV_pop.segments[0].filter(name='sV')[0])
+print(err_pop.segments[0].filter(name='err_func')[0])
+
+###############################################################
 #v = neo.segments[0].filter(name='Ve')[0]
 #print(v)
 
@@ -31,10 +40,6 @@ Ve_pop = pop.get_data('Ve')
 #p.setup(timestep=1.0, min_delay=1.0, max_delay=144.0)
 #nNeurons=1
 #p.set_number_of_neurons_per_core(p.Meanfield, nNeurons)
-
-print(Ve_pop.segments[0].filter(name='Ve')[0])
-#print(err_pop.segments[0].filter(name='err_func')[0])
-
 
 #Figure(
 #    Panel(Ve_pop.segments[0].filter(name='Ve')[0],
