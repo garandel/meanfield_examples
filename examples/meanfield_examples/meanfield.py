@@ -16,8 +16,39 @@ n_neurons = 10
 p.setup(time_step)
 #sim.set_numbre_of_neurons_per_core(sim.MeanfieldBase, 1)
 pop = list()
+other_firing_rates = {'a': 0,
+                      'b': 0,
+                      'tauw': 1.,
+                      'Trefrac': 5.0,
+                      'Vreset': -65.,
+                      'delta_v': -0.5,
+                      'ampnoise': 0.0,
+                      'Timescale_inv': 0.5,
+                      'Ve': 6.,
+                      'Vi': 30.
+                     }
 
-pop.append(p.Population(1, p.extra_models.Meanfield()))
+other_config = {'p0':0.,
+                'p1':0.,
+                'p2':0.,
+                'p3':0.,
+                'p4':0.,
+                'p5':0.,
+                'p6':0.,
+                'p7':0.,
+                'p8':0.,
+                'p9':0.,
+                'p10':0.,
+                }
+P1 = np.load('FS-cell_CONFIG1_fit.npy')
+params = {}
+
+for i in range(0,11):
+    params['p'+str(i)] = P1[i]
+
+
+
+pop.append(p.Population(1, p.extra_models.Meanfield(**params)))
 
 pop[0].record(['Ve', 'Vi', 'Fout_th', 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
 #pop.record(['Vi'])
