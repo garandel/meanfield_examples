@@ -3,7 +3,7 @@ import spynnaker8 as p
 from pyNN.utility.plotting import Figure, Panel
 import matplotlib.pyplot as plt
 import numpy as np
-from neo.core import AnalogSignal
+#from neo.core import AnalogSignal
 
 #from spynnaker.pyNN.models.neuron.builds.meanfield_base import MeanfieldBase
 
@@ -16,54 +16,53 @@ n_neurons = 10
 p.setup(time_step)
 #sim.set_numbre_of_neurons_per_core(sim.MeanfieldBase, 1)
 pop = list()
-other_firing_rates = {'a': 0,
-                      'b': 0,
-                      'tauw': 1.,
-                      'Trefrac': 5.0,
-                      'Vreset': -65.,
-                      'delta_v': -0.5,
-                      'ampnoise': 0.0,
-                      'Timescale_inv': 0.5,
-                      'Ve': 6.,
-                      'Vi': 30.
-                     }
 
-other_config = {'p0':0.,
-                'p1':0.,
-                'p2':0.,
-                'p3':0.,
-                'p4':0.,
-                'p5':0.,
-                'p6':0.,
-                'p7':0.,
-                'p8':0.,
-                'p9':0.,
-                'p10':0.,
-                }
-P1 = np.load('FS-cell_CONFIG1_fit.npy')
-params = {}
+#---------------------------------------------------------
+#other_firing_rates = {'a': 0,
+#                      'b': 0,
+#                      'tauw': 1.,
+#                      'Trefrac': 5.0,
+#                      'Vreset': -65.,
+#                      'delta_v': -0.5,
+#                      'ampnoise': 0.0,
+#                      'Timescale_inv': 0.5,
+#                      'Ve': 6.,
+#                      'Vi': 30.
+#                     }
 
-for i in range(0,11):
-    params['p'+str(i)] = P1[i]
+#other_config = {'p0':0.,
+#                'p1':0.,
+#                'p2':0.,
+#                'p3':0.,
+#                'p4':0.,
+#                'p5':0.,
+#                'p6':0.,
+#                'p7':0.,
+#                'p8':0.,
+#                'p9':0.,
+#                'p10':0.,
+#                }
+#P1 = np.load('FS-cell_CONFIG1_fit.npy')
+#params = {}
 
+#for i in range(0,11):
+#    params['p'+str(i)] = P1[i]
 
+#-----------------------------------------------------------
 
-pop.append(p.Population(1, p.extra_models.Meanfield(**params)))
+pop.append(p.Population(1, p.extra_models.Meanfield()))
 
-pop[0].record(['Ve', 'Vi', 'Fout_th', 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
+pop[0].record(['w', 'Ve', 'Vi'])#, 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
 #pop.record(['Vi'])
 #pop.record('Fout_th')
 
 p.run(runtime)
 
-data = pop[0].get_data(['Ve','Vi', 'Fout_th', 'gsyn_exc', 'gsyn_inh'])# Block
+data = pop[0].get_data(['w', 'Ve','Vi'])#, 'gsyn_exc', 'gsyn_inh'])# Block
 #Ve_data = pop[0].get_gata('Ve')
 #data = pop[0].get_data(['Vi'])
 
-data_Ve_nparray = pop[0].spinnaker_get_data(['Ve'])
-data_Vi_nparray = pop[0].spinnaker_get_data(['Vi'])
 
-data_Fout_th_nparray = pop[0].spinnaker_get_data(['Fout_th'])
 
 #Vi_pop = pop.get_data(['Vi'])
 #Fout = pop.get_data('Fout_th')
@@ -72,14 +71,25 @@ data_Fout_th_nparray = pop[0].spinnaker_get_data(['Fout_th'])
 print(data.segments[0])
 
 for seg in data.segments:
-    for i in ['Ve','Vi', 'Fout_th', 'gsyn_exc', 'gsyn_inh']:
+    for i in ['Ve','Vi', 'w']:#, 'gsyn_exc', 'gsyn_inh']:
         print(seg)
         print(seg.filter(name=i))
 
 #test = data.segments[0].filter(name='Vi')[0]
-print(data_Ve_nparray)
-print(data_Vi_nparray)
-print(data_Fout_th_nparray)
+
+#-----------------------vvvv--------------------------------------
+
+#data with spinnaker_get_data([''])
+
+#data_Ve_nparray = pop[0].spinnaker_get_data(['Ve'])
+#data_Vi_nparray = pop[0].spinnaker_get_data(['Vi'])
+#data_W_nparray = pop[0].spinnaker_get_data(['W'])
+
+#print(data_Ve_nparray)
+#print(data_Vi_nparray)
+#print(data_W_nparray)
+
+#-----------------------^^^^---------------------------------------
 
 #Figure(
 #    Panel(data.segments[0].filter(name='Vi')[0],
