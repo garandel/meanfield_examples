@@ -5,17 +5,19 @@ import matplotlib.pyplot as plt
 import numpy as np
 #from neo.core import AnalogSignal
 
-#from spynnaker.pyNN.models.neuron.builds.meanfield_base import MeanfieldBase
 
 runtime = 50
 
-time_step = 1.0
+time_step = 0.25
 
 n_neurons = 10
 
 p.setup(time_step)
 #sim.set_numbre_of_neurons_per_core(sim.MeanfieldBase, 1)
 pop = list()
+
+#data_mf = p.Population(1,p.extra_models.Meanfield())
+#spikes =  p.Population(1, p.
 
 #---------------------------------------------------------
 #other_firing_rates = {'a': 0,
@@ -49,58 +51,85 @@ pop = list()
 #    params['p'+str(i)] = P1[i]
 
 #-----------------------------------------------------------
+#pop.append(p.Population(1, p.extra_models.Meanfield()))
 
-pop.append(p.Population(1, p.extra_models.Meanfield()))
+#pop[0].record(['Ve', 'Vi','w'])#, 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
+#p.run(runtime)
 
-pop[0].record(['w', 'Ve', 'Vi'])#, 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
-#pop.record(['Vi'])
-#pop.record('Fout_th')
-
-p.run(runtime)
-
-data = pop[0].get_data(['w', 'Ve','Vi'])#, 'gsyn_exc', 'gsyn_inh'])# Block
+#data = pop[0].get_data(['Ve','Vi','w'])#, 'gsyn_exc', 'gsyn_inh'])# Block
 #Ve_data = pop[0].get_gata('Ve')
-#data = pop[0].get_data(['Vi'])
-
-
-
-#Vi_pop = pop.get_data(['Vi'])
-#Fout = pop.get_data('Fout_th')
-
 #print(data)
-print(data.segments[0])
+#print(data.segments[0].filter(name='Ve'))
+#fig = plt.figure()
 
-for seg in data.segments:
-    for i in ['Ve','Vi', 'w']:#, 'gsyn_exc', 'gsyn_inh']:
-        print(seg)
-        print(seg.filter(name=i))
+#for seg in data.segments:
+#    for i in ['Ve','Vi', 'w']:#, 'gsyn_exc', 'gsyn_inh']:
+#        print(seg)
+#        print(seg.filter(name=i))
+#        times = 
+#        plt.plot()
+#        fig.savefig(i'_test.png')
+
+        
+#xlim = (0, runtime)
+#y = data.segments[0].filter(name='Ve')[0]
+#plt.plot(xlim, y)
+
 
 #test = data.segments[0].filter(name='Vi')[0]
 
-#-----------------------vvvv--------------------------------------
+#Figure(
+#    Panel(data.segments[0].filter(name='Ve'),
+#          ylabel="MF (mV)",
+#          yticks=True,
+#          xlim=(0, runtime)),
+#    title="test",
+#    annotation="Simulated with {}".format(p.name())
+#)
 
-#data with spinnaker_get_data([''])
 
-#data_Ve_nparray = pop[0].spinnaker_get_data(['Ve'])
-#data_Vi_nparray = pop[0].spinnaker_get_data(['Vi'])
-#data_W_nparray = pop[0].spinnaker_get_data(['W'])
 
-#print(data_Ve_nparray)
-#print(data_Vi_nparray)
-#print(data_W_nparray)
+#plt.show()
+
+
+#-----------------------vvvv--------------------------------------#
+##############---data with spinnaker_get_data([''])---#############
+#-----------------------------------------------------------------#
+
+
+pop.append(p.Population(1, p.extra_models.Meanfield()))
+
+pop[0].record(['Ve', 'Vi','w'])#, 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
+p.run(runtime)
+
+data_Ve_nparray = pop[0].spinnaker_get_data(['Ve'])
+data_Vi_nparray = pop[0].spinnaker_get_data(['Vi'])
+data_W_nparray = pop[0].spinnaker_get_data(['w'])
+
+print(data_Ve_nparray)
+print(data_Vi_nparray)
+print(data_W_nparray)
+
+fig = plt.figure()
+
+xve=data_Ve_nparray[:,1]
+yve=data_Ve_nparray[:,2]
+figVe = fig.add_subplot(3,1,1)
+figVe.plot(xve, yve)
+
+xvi=data_Vi_nparray[:,1]
+yvi=data_Vi_nparray[:,2]
+figVi = fig.add_subplot(3,1,2)
+figVi.plot(xvi, yvi)
+
+xw=data_W_nparray[:,1]
+yw=data_W_nparray[:,2]
+figW = fig.add_subplot(3,1,3)
+figW.plot(xw, yw)
+
+fig.savefig('test.png')
 
 #-----------------------^^^^---------------------------------------
-
-#Figure(
-#    Panel(data.segments[0].filter(name='Vi')[0],
-#          ylabel="Membrane potential (mV)",
-#          data_labels=[pop[0].label], yticks=True, xlim=(0, runtime))
-#)
-#plt.show()
-#print(data.segments[0].filter(name='Ve')[0])
-#print(data.segments[0].filter(name='Vi')[0])
-#print(Fout.segments[0].filter(name='Fout_th')[0])
-#print(np.linspace(0, runtime))
 
 ###############################################################
 #v = neo.segments[0].filter(name='Ve')[0]
