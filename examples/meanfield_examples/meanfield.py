@@ -21,90 +21,15 @@ p.setup(time_step)
 
 pop = list()
 
-#data_mf = p.Population(1,p.extra_models.Meanfield())
-#spikes =  p.Population(1, p.
-
-#---------------------------------------------------------
-#other_firing_rates = {'a': 0,
-#                      'b': 0,
-#                      'tauw': 1.,
-#                      'Trefrac': 5.0,
-#                      'Vreset': -65.,
-#                      'delta_v': -0.5,
-#                      'ampnoise': 0.0,
-#                      'Timescale_inv': 0.5,
-#                      'Ve': 6.,
-#                      'Vi': 30.
-#                     }
-
-#other_config = {'p0':0.,
-#                'p1':0.,
-#                'p2':0.,
-#                'p3':0.,
-#                'p4':0.,
-#                'p5':0.,
-#                'p6':0.,
-#                'p7':0.,
-#                'p8':0.,
-#                'p9':0.,
-#                'p10':0.,
-#                }
-#P1 = np.load('FS-cell_CONFIG1_fit.npy')
-#params = {}
-
-#for i in range(0,11):
-#    params['p'+str(i)] = P1[i]
-
-#-----------------------------------------------------------
-#pop.append(p.Population(1, p.extra_models.Meanfield()))
-
-#pop[0].record(['Ve', 'Vi','w'])#, 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
-#p.run(runtime)
-
-#data = pop[0].get_data(['Ve','Vi','w'])#, 'gsyn_exc', 'gsyn_inh'])# Block
-#Ve_data = pop[0].get_gata('Ve')
-#print(data)
-#print(data.segments[0].filter(name='Ve'))
-#fig = plt.figure()
-
-#for seg in data.segments:
-#    for i in ['Ve','Vi', 'w']:#, 'gsyn_exc', 'gsyn_inh']:
-#        print(seg)
-#        print(seg.filter(name=i))
-#        times = 
-#        plt.plot()
-#        fig.savefig(i'_test.png')
-
-        
-#xlim = (0, runtime)
-#y = data.segments[0].filter(name='Ve')[0]
-#plt.plot(xlim, y)
-
-
-#test = data.segments[0].filter(name='Vi')[0]
-
-#Figure(
-#    Panel(data.segments[0].filter(name='Ve'),
-#          ylabel="MF (mV)",
-#          yticks=True,
-#          xlim=(0, runtime)),
-#    title="test",
-#    annotation="Simulated with {}".format(p.name())
-#)
-
-
-
-#plt.show()
-
-
 #-----------------------vvvv--------------------------------------#
 ##############---data with spinnaker_get_data([''])---#############
 #-----------------------------------------------------------------#
 
-MF_splitter = SplitterAbstractPopulationVertexNeuronsSynapses(1)
+#MF_splitter = SplitterAbstractPopulationVertexNeuronsSynapses(1)
 
 #p.set_number_of_neurons_per_core(p.extra_models.Meanfield(), 1)
-pop.append(p.Population(1, p.extra_models.Meanfield(),additional_parameters={"splitter": MF_splitter}))
+pop.append(p.Population(1,
+                        p.extra_models.Meanfield()))#,additional_parameters={"splitter": MF_splitter}))
 
 pop[0].record(['Ve', 'Vi','w'])#, 'gsyn_exc', 'gsyn_inh'])#, to_file='test.dat')
 p.run(runtime)
@@ -138,30 +63,5 @@ figW.title.set_text("W")
 figW.plot(xw, yw)
 
 fig.savefig('test_totality.png')
-
-#-----------------------^^^^---------------------------------------
-
-###############################################################
-#v = neo.segments[0].filter(name='Ve')[0]
-#print(v)
-
-#runtime =500
-#p.setup(timestep=1.0, min_delay=1.0, max_delay=144.0)
-#nNeurons=1
-#p.set_number_of_neurons_per_core(p.Meanfield, nNeurons)
-
-#x = Ve_pop.segments[0].filter(name='Ve')[0]
-#y = err_pop.segments[0].filter(name='err_func')[0]
-
-#Figure(
-#    Panel(err_pop.segments[0].filter(name='err_pop')[0],
-#          ylabel="MF (mV)",
-#          yticks=True,
-#          xlim=(0, runtime),
-#          xticks=True),
-#    title="test"
-#)
-#plt.plot(y)
-#plt.show()
 
 p.end()
